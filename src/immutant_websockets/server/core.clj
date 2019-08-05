@@ -9,7 +9,13 @@
     [ring.util.response       :refer (response redirect content-type)])
   (:gen-class))
 
-(def channel-store (atom ()))
+(def channel-store (atom []))
+
+(defn send-message-to-all []
+  "Sends a message to all connected ws connections"
+    (doseq [ch @channel-store]
+      (async/send! ch "Message Received")))
+
 ; (:id (ws/session h) get user ID of message
 ; need to be able to pool these and send it out to all with ID
 (def websocket-callbacks
@@ -20,6 +26,7 @@
   :on-close   (fn [channel {:keys [code reason]}]
     (println "close code:" code "reason:" reason))
   :on-message (fn [ch m]
+    (send-message-to-all)
     (async/send! ch (apply str (reverse m))))})
 
 
