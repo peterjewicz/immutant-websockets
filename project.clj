@@ -13,6 +13,7 @@
                  [org.clojure/core.async  "0.4.500"]
                  [org.immutant/immutant "2.1.10"]
                  [compojure "1.6.1"]
+                 [nilenso/wscljs "0.2.0"]
                  [ring/ring-core "1.7.1"]
                  [environ "1.0.0"]
                  [reagent "0.8.1"]]

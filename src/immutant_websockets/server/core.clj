@@ -21,11 +21,13 @@
 (def websocket-callbacks
   "WebSocket callback functions"
   {:on-open   (fn [channel]
-    (swap! channel-store conj channel)
+    (swap! channel-store conj channel) ; store channels for later
     (async/send! channel "Ready to reverse your messages!"))
   :on-close   (fn [channel {:keys [code reason]}]
     (println "close code:" code "reason:" reason))
   :on-message (fn [ch m]
+    (println m)
+    (println (apply str (reverse m)))
     (send-message-to-all)
     (async/send! ch (apply str (reverse m))))})
 
